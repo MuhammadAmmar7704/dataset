@@ -16,6 +16,28 @@ class AbstractShape(ABC):
                destination: storage folder path
        """
 
+    # Define the color palette
+    COLORS = [
+        (169, 232, 232),  # A9E8E8
+        (131, 204, 210),  # 83CCD2
+        (245, 226, 158),  # F5E29E
+        (226, 207, 136),  # E2CF88
+        (210, 204, 242),  # D2CCF2
+        (190, 185, 226),  # beb9e2
+        (232, 135, 202),  # E887CA
+        (216, 128, 200),  # D880C8
+        (246, 136, 162),  # F688a2
+        (223, 207, 243),  # DFCFF3
+        (173, 225, 239),  # ADE1EF
+        (198, 234, 238),  # C6EAEE
+        (178, 234, 211),  # B2EAD3
+        (177, 232, 237),  # B1E8ED
+        (237, 141, 213),  # ED8DD5
+        (200, 235, 239),  # C8EBEF
+        (192, 243, 234),  # C0F3EA
+        (245, 244, 214),  # F5F4D6
+    ]
+
     def __init__(self, destination, painter):
         self.painter = painter
         self.destination = destination
@@ -25,18 +47,12 @@ class AbstractShape(ABC):
 
     def __set_random_bg_color(self):
         """
-        Set a random background color on the turtle canvas.
-
-        Since it's not possible to set this value directly into the canvas we
-        draw a rectangle that fill all the drawing window with a random filling
-        color, which set indirectly a visual background color to the canvas.
-
-        :return: None
+        Set a white background color on the turtle canvas.
         """
-        color = np.random.randint(0, 255, 3)
+        color = (255, 255, 255)  # White background
 
-        self.painter.fillcolor(color[0], color[1], color[2])
-        self.painter.color(color[0], color[1], color[2])
+        self.painter.fillcolor(*color)
+        self.painter.color(*color)
         self.painter.penup()
         self.painter.setposition(-160, 160)
         self.painter.pendown()
@@ -54,8 +70,8 @@ class AbstractShape(ABC):
         """
         Set all the common random parameters of a Shape :
 
-            - random background color
-            - random filling color
+            - white background color
+            - random color from predefined palette
             - random perimeter (deduced from the circumscribed circle's radius)
             - random rotation angle
             - center of the circumscribed circle of a shape
@@ -65,9 +81,10 @@ class AbstractShape(ABC):
         self.painter.reset()
 
         self.__set_random_bg_color()
-        color = np.random.randint(0, 255, 3)
-        self.painter.fillcolor(color[0], color[1], color[2])
-        self.painter.color(color[0], color[1], color[2])
+        color = np.random.choice(len(self.COLORS))  # Random color from palette
+        color_rgb = self.COLORS[color]
+        self.painter.fillcolor(*color_rgb)
+        self.painter.color(*color_rgb)
         self.painter.penup()
         self.radius = np.random.randint(10, 75)
         self.rotation = np.deg2rad(np.random.randint(-180, 180))
