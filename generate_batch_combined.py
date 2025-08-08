@@ -37,8 +37,8 @@ def generate_batch_combined_images(source_dir="colored_shapes", output_dir="gene
     print(f"Generating {num_images} combined images...")
     
     for i in range(num_images):
-        # Always select exactly 5 shapes (allows duplicates)
-        num_shapes = 5
+        # Randomly select between 3-5 shapes (allows duplicates)
+        num_shapes = random.randint(3, 5)
         selected_shape_dirs = random.choices(shape_dirs, k=num_shapes)
         
         # Pick one random image from each selected shape folder
@@ -60,10 +60,9 @@ def generate_batch_combined_images(source_dir="colored_shapes", output_dir="gene
         images = [Image.open(img).convert("RGBA") for img in selected_images]
         width, height = images[0].size
         
-        # Calculate grid dimensions for 5 images (ideal layout would be roughly square)
-        # For 5 images, we'll use a 3x2 grid (6 slots with 1 empty)
-        cols = 3
-        rows = 2
+        # Calculate grid dimensions for better layout (3-5 images)
+        cols = math.ceil(math.sqrt(len(images)))
+        rows = math.ceil(len(images) / cols)
         
         # Create blank canvas with white background
         canvas = Image.new('RGBA', (width * cols, height * rows), (255, 255, 255, 255))
@@ -82,7 +81,7 @@ def generate_batch_combined_images(source_dir="colored_shapes", output_dir="gene
             print(f"✓ Generated {i + 1}/{num_images} images...")
     
     print(f"\n🎉 Generated {num_images} combined images in '{output_dir}' folder!")
-    print(f"📁 Each image contains exactly 5 shapes with beautiful colors from your palette")
+    print(f"📁 Each image contains 3-5 shapes with beautiful colors from your palette")
 
 if __name__ == "__main__":
     # Generate 500 combined images (as requested)
