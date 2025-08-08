@@ -86,4 +86,4 @@ def generate_batch_combined_images(source_dir="colored_shapes", output_dir="gene
 
 if __name__ == "__main__":
     # Generate 500 combined images (as requested)
-    generate_batch_combined_images(num_images=4500)
+    generate_batch_combined_images(num_images=5000)
